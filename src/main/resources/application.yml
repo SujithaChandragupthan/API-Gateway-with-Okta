@@ -1,0 +1,63 @@
+server:
+  port: 8072
+spring:
+  application:
+    name: "gatewayserver"
+  cloud:
+    gateway:
+      routes:
+      - id: customer
+        uri: lb://customer
+        predicates:
+          - Path=/customerapi/**
+      - id: courses
+        uri: lb://courses
+        predicates:
+          - Path=/api/**
+      discovery:
+        locator:
+          enabled: false
+          
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "CRM gateway server Application"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        accounts: DEBUG
+    
+okta:
+    oauth2:
+        clientId: 0oadijaj9sfxnf6jk5d7
+        clientSecret: TnMqWHaVsfmc0p7n32fDsX8FDAovagwK5AEZezsOejPFV-LxS4h66vyfrQZeks3k
+        issuer: https://dev-95557372.okta.com/oauth2/default
+        audience: api://default
+        scopes: openid, profile, email, offline_access
+
+        
